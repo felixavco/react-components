@@ -1,0 +1,15 @@
+.header {
+    background: red;
+
+    &_btn-cont {
+        height: 50px;
+        width: 50px;
+        background: violet
+        
+        span {
+            width: 75%;
+            height: 5px;
+            color: red;
+        }
+    }
+}

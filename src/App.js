@@ -3,10 +3,12 @@ import "./App.scss";
 
 //Components
 import SideBar from "./components/sideBar/SideBar";
+import Register from "./components/register/Register";
 
 const App = () => (
   <div className="App">
-    <SideBar />
+    {/* <SideBar /> */}
+    <Register />
   </div>
 );
 

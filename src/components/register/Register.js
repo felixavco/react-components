@@ -1,89 +1,142 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
+import './register.scss';
+import isEmpty from '../../utils/isEmpty';
+import capitalize from '../../utils/capitalize';
+import axios from 'axios';
 import { API_URL } from '../../config/config';
-import axios from 'axios'
 
-const EmailField = () => {
-	// *This component contains the logic for the Email field*/
+//* Components
+import NameField from './NameField';
+import EmailField from './EmailField';
+import PasswordField from './PasswordField';
+
+function Register() {
+	//* Name State
+	let [ name, setName ] = useState('');
+	const [ nameMessage, setNameMessage ] = useState({ text: '', error: false, animation: false });
+
+	//* Email State
 	const [ email, setEmail ] = useState('');
-	const [ emailMessage, setEmailMessage ] = useState({ text: '', error: false });
+	const [ emailMessage, setEmailMessage ] = useState({ text: '', error: false, animation: false });
+
+	//* Password State
+	const [ password, setPassword ] = useState('');
+	const [ passwordMessage, setPasswordMessage ] = useState({ text: '', error: false, animation: false });
+
+	const [ confirPwd, setConfirPwd ] = useState('');
+	const [ confirPwdMessage, setConfirPwdMessage ] = useState({ text: '', error: false, animation: false });
+
+	//* If there is no Errors this enables the submit button
+	const [ areFieldsValid, setAreFieldsValid ] = useState(false);
+
+	//* Is Loading
+	const [ isLoading, setIsLoading ] = useState(false);
 
 	useEffect(
 		() => {
-			if (validateEmail(email)) {
-				isEmailAvailable(email);
-			} else if (email !== '') {
-				setEmailMessage({ text: 'Invalid Email', error: true });
+			//* Checks if all Fields are not empty
+			if (!isEmpty(name) && !isEmpty(email) && !isEmpty(password) && !isEmpty(confirPwd)) {
+				//* Checks if there is no errors to enable submit button
+				if (nameMessage.error || emailMessage.error || passwordMessage.error || confirPwdMessage.error) {
+					setAreFieldsValid(false);
+				} else {
+					setAreFieldsValid(true);
+				}
 			}
 		},
-		[ email ]
+		[ nameMessage, emailMessage, passwordMessage, confirPwdMessage ]
 	);
 
-	const isEmailAvailable = async (email) => {
+	const clearForm = () => {
+		setName('');
+		setEmail('');
+		setPassword('');
+		setConfirPwd('');
+		setAreFieldsValid(false);
+	};
+
+	const onFormSubmit = async (e) => {
+		e.preventDefault();
+		setIsLoading(true);
+		//* Capitalize the initial of each name
+		name = name.split(' ').map((n) => capitalize(n)).join(' ');
+
 		try {
-			const res = await axios.post(API_URL + '/user/check-email', {email})
-			setEmailMessage({ text: res.data.message, error: false });
-			} catch (err) {
-				const { email } = err.response.data;
-				setEmailMessage({ text: email, error: true });
+			const newUser = { name, email, password };
+			const res = await axios.post(API_URL + '/user/register', newUser);
+			if (res) {
+				console.log(res.data);
+				setIsLoading(false);
+				clearForm();
+			}
+		} catch (err) {
+			if (err) {
+				console.error(err.response.data);
+				setIsLoading(false);
+				clearForm();
+			}
 		}
 	};
 
-	const validateEmail = (email_val) => {
-		const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return regex.test(email_val);
-	};
-
-	const onEmailBlur = () => {
-		if (email === '') {
-			setEmailMessage({ text: 'Email is required', error: true });
-		} else if (!validateEmail(email)) {
-			setEmailMessage({ text: 'Invalid Email', error: true });
-		}
-	};
-
-	// *Styles
-	const inputError = { borderColor: 'red' };
-	const inputSuccess = { borderColor: 'green' };
-	const msgError = { color: 'red' };
-	const msgSuccess = { color: 'green' };
+	let button_content;
+	if (isLoading) {
+		button_content = (
+			<Fragment>
+				Sending&nbsp;<i className="fas fa-spinner fa-pulse" />
+			</Fragment>
+		);
+	} else {
+		button_content = 'Create Account';
+	}
 
 	return (
-		<div className="form-group">
-			<label htmlFor="email" style={emailMessage.error ? msgError : null}>
-				* Email address
-			</label>
-			<input
-				style={emailMessage.error ? inputError : email === '' ? null : inputSuccess}
-				type="email"
-				className="form-control"
-				id="email"
-				placeholder="Enter email"
-				name="email"
-				value={email}
-				onChange={(e) => setEmail(e.target.value.trim())}
-				onBlur={onEmailBlur}
-			/>
-			<small className="form-text" style={emailMessage.error ? msgError : email === '' ? null : msgSuccess}>
-				{emailMessage.text}
-			</small>
-		</div>
-	);
-};
-
-const Register = () => {
-	return (
-		<div className="container mt-5">
+		<div className="container mt-5 Register">
 			<div className="row">
-				<form className="mx-auto col-md-6 col-12">
-					<div className="form_title mb-4 d-flex flex-column align-items-center">
+				<form className="mx-auto Register_form col-md-6 col-12" onSubmit={onFormSubmit}>
+					<div className="Register_form-title mb-4 d-flex flex-column align-items-center">
 						<h2>Register</h2>
-						<small className="form-text text-muted">* Required Fields</small>
+						<small className="form-text text-muted">All fields are required</small>
 					</div>
-					<EmailField />
+					<div className="Register_form-body">
+						<NameField
+							name={name}
+							setName={setName}
+							nameMessage={nameMessage}
+							setNameMessage={setNameMessage}
+						/>
+
+						<EmailField
+							email={email}
+							setEmail={setEmail}
+							emailMessage={emailMessage}
+							setEmailMessage={setEmailMessage}
+						/>
+
+						<PasswordField
+							password={password}
+							setPassword={setPassword}
+							passwordMessage={passwordMessage}
+							setPasswordMessage={setPasswordMessage}
+							confirPwd={confirPwd}
+							setConfirPwd={setConfirPwd}
+							confirPwdMessage={confirPwdMessage}
+							setConfirPwdMessage={setConfirPwdMessage}
+						/>
+						{/* Button container */}
+						<div className="d-flex justify-content-center">
+							<button
+								type="submit"
+								className={`btn btn-primary ${areFieldsValid ? 'enabled' : 'disabled'}`}
+								disabled={`${areFieldsValid ? '' : 'disabled'}`}
+							>
+								{button_content}
+							</button>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
 	);
-};
+}
 
 export default Register;

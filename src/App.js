@@ -2,7 +2,7 @@ import React from "react";
 import "./App.scss";
 
 //Components
-import SideBar from "./components/sideBar/SideBar";
+// import SideBar from "./components/sideBar/SideBar";
 import Register from "./components/register/Register";
 
 const App = () => (

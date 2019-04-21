@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import isEmpty from '../../utils/isEmpty';
+import capitalize from '../../utils/capitalize';
 import { inputError, inputSuccess, msgError, msgSuccess } from './messageStyles';
+
 
 function NameField({ name, setName, nameMessage, setNameMessage }) {
 	const nameArr = name.split(' ');
@@ -28,8 +31,8 @@ function NameField({ name, setName, nameMessage, setNameMessage }) {
 				id="name"
 				placeholder="Enter your First and Last name"
 				name="name"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
+				value={name} 
+				onChange={(e) => setName(e.target.value.split(' ').map((n) => capitalize(n)).join(' '))}
 				onBlur={onNameBlur}
 			/>
 			<small className="form-text" style={nameMessage.error ? msgError : name === '' ? null : msgSuccess}>
@@ -38,5 +41,12 @@ function NameField({ name, setName, nameMessage, setNameMessage }) {
 		</div>
 	);
 }
+
+NameField.propTypes = {
+	name: PropTypes.string.isRequired, 
+	setName: PropTypes.func.isRequired, 
+	nameMessage: PropTypes.object.isRequired, 
+	setNameMessage: PropTypes.func.isRequired
+};
 
 export default NameField;

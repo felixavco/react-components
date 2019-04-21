@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import isEmpty from '../../utils/isEmpty';
+import PropTypes from 'prop-types';
 import { inputError, inputSuccess, msgError, msgSuccess } from './messageStyles';
 
 function PasswordField({
@@ -61,6 +62,13 @@ function PasswordField({
 		}
 	};
 
+	const clearPwdField = () => {
+		setIsLength(false);
+		setIsUpper(false);
+		setIsNumber(false);
+		setIsSpecialChar(false);
+	};
+
 	useEffect(
 		() => {
 			if (password !== '') {
@@ -68,6 +76,8 @@ function PasswordField({
 				lengthValidatior(password);
 				upperValidator(password);
 				numberValidator(password);
+			} else {
+				clearPwdField();
 			}
 		},
 		[ password ]
@@ -134,26 +144,22 @@ function PasswordField({
 				<ul>
 					<li style={isLength ? msgSuccess : {}}>
 						{isLength ? success : fail}
-						&nbsp;
-						<small>Password must have between 8 to 30 characters</small>
+						&nbsp; Password must have between 8 to 30 characters
 					</li>
 
 					<li style={isUpper ? msgSuccess : {}}>
 						{isUpper ? success : fail}
-						&nbsp;
-						<small>Password must have at least 2 upper case</small>
+						&nbsp; Password must have at least 2 upper case
 					</li>
 
 					<li style={isNumber ? msgSuccess : {}}>
 						{isNumber ? success : fail}
-						&nbsp;
-						<small>Password must have at least 2 numbers</small>
+						&nbsp; Password must have at least 2 numbers
 					</li>
 
 					<li style={isSpecialChar ? msgSuccess : {}}>
 						{isSpecialChar ? success : fail}
-						&nbsp;
-						<small>Password must have at least 1 of these characters !@#$%^&*+- </small>
+						&nbsp; Password must have at least 1 of these characters !@#$%^&*+-
 					</li>
 				</ul>
 
@@ -188,7 +194,7 @@ function PasswordField({
 				</label>
 				<div className="Register_password-input">
 					<input
-						disabled={!confirmField}
+						// disabled={!confirmField}
 						style={confirPwdMessage.error ? inputError : confirPwd === '' ? null : inputSuccess}
 						type={showConfirPwd ? 'text' : 'password'}
 						id="confirPwd"
@@ -211,5 +217,17 @@ function PasswordField({
 		</Fragment>
 	);
 }
+
+PasswordField.propTypes = {
+	password: PropTypes.string.isRequired, 
+	setPassword: PropTypes.func.isRequired, 
+	passwordMessage: PropTypes.object.isRequired, 
+	setPasswordMessage: PropTypes.func.isRequired,
+
+	confirPwd: PropTypes.string.isRequired, 
+	setConfirPwd: PropTypes.func.isRequired, 
+	confirPwdMessage: PropTypes.object.isRequired, 
+	setConfirPwdMessage: PropTypes.func.isRequired
+};
 
 export default PasswordField;

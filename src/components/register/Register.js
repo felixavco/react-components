@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import './register.scss';
 import isEmpty from '../../utils/isEmpty';
-import capitalize from '../../utils/capitalize';
 import axios from 'axios';
 import { API_URL } from '../../config/config';
 
@@ -12,7 +11,7 @@ import PasswordField from './PasswordField';
 
 function Register() {
 	//* Name State
-	let [ name, setName ] = useState('');
+	const [ name, setName ] = useState('');
 	const [ nameMessage, setNameMessage ] = useState({ text: '', error: false, animation: false });
 
 	//* Email State
@@ -32,6 +31,8 @@ function Register() {
 	//* Is Loading
 	const [ isLoading, setIsLoading ] = useState(false);
 
+	const [ createdUserName, setCreatedUserName ] = useState('');
+
 	useEffect(
 		() => {
 			//* Checks if all Fields are not empty
@@ -47,6 +48,13 @@ function Register() {
 		[ nameMessage, emailMessage, passwordMessage, confirPwdMessage ]
 	);
 
+	//* Clears the created user name to remove the alert after 2s
+	useEffect(() => {
+		setTimeout(() => {
+			setCreatedUserName('')
+		}, 2000);
+	}, [createdUserName]);
+
 	const clearForm = () => {
 		setName('');
 		setEmail('');
@@ -58,16 +66,14 @@ function Register() {
 	const onFormSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		//* Capitalize the initial of each name
-		name = name.split(' ').map((n) => capitalize(n)).join(' ');
 
 		try {
 			const newUser = { name, email, password };
 			const res = await axios.post(API_URL + '/user/register', newUser);
 			if (res) {
-				console.log(res.data);
 				setIsLoading(false);
 				clearForm();
+				setCreatedUserName(res.data.name);
 			}
 		} catch (err) {
 			if (err) {
@@ -90,52 +96,64 @@ function Register() {
 	}
 
 	return (
-		<div className="container mt-5 Register">
+		<Fragment>
 			<div className="row">
-				<form className="mx-auto Register_form col-md-6 col-12" onSubmit={onFormSubmit}>
-					<div className="Register_form-title mb-4 d-flex flex-column align-items-center">
-						<h2>Register</h2>
-						<small className="form-text text-muted">All fields are required</small>
-					</div>
-					<div className="Register_form-body">
-						<NameField
-							name={name}
-							setName={setName}
-							nameMessage={nameMessage}
-							setNameMessage={setNameMessage}
-						/>
-
-						<EmailField
-							email={email}
-							setEmail={setEmail}
-							emailMessage={emailMessage}
-							setEmailMessage={setEmailMessage}
-						/>
-
-						<PasswordField
-							password={password}
-							setPassword={setPassword}
-							passwordMessage={passwordMessage}
-							setPasswordMessage={setPasswordMessage}
-							confirPwd={confirPwd}
-							setConfirPwd={setConfirPwd}
-							confirPwdMessage={confirPwdMessage}
-							setConfirPwdMessage={setConfirPwdMessage}
-						/>
-						{/* Button container */}
-						<div className="d-flex justify-content-center">
-							<button
-								type="submit"
-								className={`btn btn-primary ${areFieldsValid ? 'enabled' : 'disabled'}`}
-								disabled={`${areFieldsValid ? '' : 'disabled'}`}
-							>
-								{button_content}
-							</button>
-						</div>
-					</div>
-				</form>
+				<div
+					class="alert alert-success col-12 col-md-6 mx-auto text-center"
+					style={{ display: `${createdUserName !== '' ? 'block' : 'none'}` }}
+					role="alert"
+				>
+					Welcome {createdUserName} your account has been created!
+				</div>
 			</div>
-		</div>
+
+			<div className="Register mt-3">
+				<div className="row">
+					<form className="mx-auto Register_form col-md-6 col-12" onSubmit={onFormSubmit}>
+						<div className="Register_form-title mb-4 d-flex flex-column align-items-center">
+							<h2>Register</h2>
+							<small className="form-text">All fields are required</small>
+						</div>
+						<div className="Register_form-body">
+							<NameField
+								name={name}
+								setName={setName}
+								nameMessage={nameMessage}
+								setNameMessage={setNameMessage}
+							/>
+
+							<EmailField
+								email={email}
+								setEmail={setEmail}
+								emailMessage={emailMessage}
+								setEmailMessage={setEmailMessage}
+							/>
+
+							<PasswordField
+								password={password}
+								setPassword={setPassword}
+								passwordMessage={passwordMessage}
+								setPasswordMessage={setPasswordMessage}
+								confirPwd={confirPwd}
+								setConfirPwd={setConfirPwd}
+								confirPwdMessage={confirPwdMessage}
+								setConfirPwdMessage={setConfirPwdMessage}
+							/>
+							{/* Button container */}
+							<div className="d-flex justify-content-center">
+								<button
+									type="submit"
+									className={`btn btn-primary ${areFieldsValid ? 'enabled' : 'disabled'}`}
+									disabled={`${areFieldsValid ? '' : 'disabled'}`}
+								>
+									{button_content}
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</Fragment>
 	);
 }
 

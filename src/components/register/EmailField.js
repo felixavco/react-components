@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { API_URL } from '../../config/config';
 import axios from 'axios';
 import isEmpty from '../../utils/isEmpty';
-import { inputError, inputSuccess, msgError, msgSuccess } from './messageStyles'
-
+import { inputError, inputSuccess, msgError, msgSuccess } from './messageStyles';
 
 function EmailField({ email, setEmail, emailMessage, setEmailMessage }) {
+	const [ isLoading, setIsLoading ] = useState(false);
+
 	useEffect(
 		() => {
 			if (validateEmail(email)) {
@@ -17,12 +19,15 @@ function EmailField({ email, setEmail, emailMessage, setEmailMessage }) {
 
 	//* Makes a request to the backend to check if the email address has been already registered
 	const isEmailAvailable = async (email) => {
+		setIsLoading(true);
 		try {
 			const res = await axios.post(API_URL + '/user/check-email', { email });
 			setEmailMessage({ text: res.data.message, error: false, animation: false });
+			setIsLoading(false);
 		} catch (err) {
 			const { email } = err.response.data;
 			setEmailMessage({ text: email, error: true, animation: true });
+			setIsLoading(false);
 		}
 	};
 
@@ -39,28 +44,45 @@ function EmailField({ email, setEmail, emailMessage, setEmailMessage }) {
 		}
 	};
 
+	let emailSpinner;
+	if(isLoading) {
+		emailSpinner = <i className="fas fa-spinner fa-pulse" />
+	} else {
+		emailSpinner = null
+	}
+
 	return (
 		<div className="form-group">
 			<label htmlFor="email" style={emailMessage.error ? msgError : null}>
 				Email address
 			</label>
-			<input
-				style={emailMessage.error ? inputError : email === '' ? null : inputSuccess}
-				type="text"
-				className={`form-control animated faster ${emailMessage.animation ? 'shake' : ''}`}
-				onAnimationEnd={() => setEmailMessage({ ...emailMessage, animation: false })}
-				id="email"
-				placeholder="Enter email"
-				name="email"
-				value={email}
-				onChange={(e) => setEmail(e.target.value.trim().toLowerCase())}
-				onBlur={onEmailBlur}
-			/>
+			<div className="Register_form-email-input-cont">
+				<input
+					style={emailMessage.error ? inputError : email === '' ? null : inputSuccess}
+					type="text"
+					className={`form-control animated faster ${emailMessage.animation ? 'shake' : ''}`}
+					onAnimationEnd={() => setEmailMessage({ ...emailMessage, animation: false })}
+					id="email"
+					placeholder="Enter email"
+					name="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value.trim().toLowerCase())}
+					onBlur={onEmailBlur}
+				/>
+				<span>{ emailSpinner }</span>
+			</div>
 			<small className="form-text" style={emailMessage.error ? msgError : email === '' ? null : msgSuccess}>
 				{emailMessage.text}
 			</small>
 		</div>
 	);
 }
+
+EmailField.propTypes = {
+	email: PropTypes.string.isRequired, 
+	setEmail: PropTypes.func.isRequired, 
+	emailMessage: PropTypes.object.isRequired, 
+	setEmailMessage: PropTypes.func.isRequired
+};
 
 export default EmailField;

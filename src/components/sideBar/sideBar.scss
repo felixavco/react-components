@@ -1,15 +1,101 @@
 .header {
-    background: red;
+	margin-top: 1rem;
+	width: 100%;
+    position: fixed;
+	z-index: 100;
+	
 
-    &_btn-cont {
-        height: 50px;
-        width: 50px;
-        background: violet
-        
-        span {
-            width: 75%;
-            height: 5px;
-            color: red;
-        }
-    }
+	.container {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	nav {
+		transition: all 250ms linear;
+	}
+
+	.arrow {
+		position: absolute;
+		top: 50px;
+		right: 0px;
+		display: block;
+		padding: 15px;
+		cursor: pointer;
+		i {
+			color: snow;
+			font-size: 1.5rem;
+		}
+	}
+
+	&_full_nav {
+		position: absolute;
+		left: 0;
+		top: -20px;
+		height: calc(100vh + 20px);
+		width: 250px;
+		background: teal;
+        display: flex;
+        align-items: center;
+        box-shadow: 3px 0px 5px #4e4e4e;
+		overflow: hidden;
+		ul {
+            list-style: none;     
+            padding: 0;
+			width: 100%;
+            li {
+                display: inline-block;
+				width: 100%;
+				padding-left: 1.5rem;
+                a {
+                    display: inline-block;
+                    padding: 1.5rem 1rem;
+                    width: 100%;
+					color: snow;
+					text-decoration: none;
+                }
+            }
+		}
+	}
+
+	&_icons_nav {
+		position: absolute;
+		left: 0;
+		top: -20px;
+		height: calc(100vh + 20px);
+		width: 50px;
+		background: teal;
+        display: flex;
+        align-items: center;
+        box-shadow: 3px 0px 3px #aaa;
+		overflow: hidden;
+		ul {
+            list-style: none;     
+            padding: 0;
+            width: 100%;
+            li {
+                display: inline-block;
+				width: 100%;
+				padding-left: 0rem;
+                a {
+                    display: inline-block;
+                    padding: 1.5rem 1rem;
+                    width: 100%;
+					color: snow;
+					text-decoration: none;
+                }
+            }
+		}
+	}
+
+	&_btn-cont {
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		background: violet;
+		position: relative;
+		span {
+			width: 75%;
+			height: 5px;
+		}
+	}
 }

@@ -99,7 +99,7 @@ function Register() {
 		<Fragment>
 			<div className="row">
 				<div
-					class="alert alert-success col-12 col-md-6 mx-auto text-center"
+					className="alert alert-success col-12 col-md-6 mx-auto text-center"
 					style={{ display: `${createdUserName !== '' ? 'block' : 'none'}` }}
 					role="alert"
 				>

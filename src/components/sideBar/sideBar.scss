@@ -12,6 +12,9 @@
 
 	nav {
 		transition: all 250ms linear;
+		.active {
+			color: #b8b8b8;
+		}
 	}
 
 	.arrow {

@@ -1,0 +1,116 @@
+.loader {
+	span:nth-child(1) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 66px;
+		height: 66px;
+		border: 6px solid #ffffff;
+		border-bottom: 6px solid transparent;
+		border-radius: 50%;
+		animation: loader1 2s linear infinite;
+	}
+
+	span:nth-child(2) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 132px;
+		height: 132px;
+		border: 6px solid #ffffff;
+		border-top: 6px solid transparent;
+		border-radius: 50%;
+		animation: loader2 2s linear infinite reverse;
+	}
+
+	span:nth-child(3) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 200px;
+		height: 200px;
+		border: 6px solid #ffffff;
+		border-bottom: 6px solid transparent;
+		border-radius: 50%;
+		animation: loader3 2s linear infinite;
+	}
+}
+
+@keyframes loader1 {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+		border: 6px solid #ff5e00;
+		border-bottom: 6px solid transparent;
+	}
+	25% {
+		border: 6px solid #00ff22;
+		border-bottom: 6px solid transparent;
+	}
+	50% {
+		border: 6px solid #00fff2;
+		border-bottom: 6px solid transparent;
+	}
+	75% {
+		border: 6px solid #7700ff;
+		border-bottom: 6px solid transparent;
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+		border: 6px solid #ff008c;
+		border-bottom: 6px solid transparent;
+	}
+}
+
+@keyframes loader2 {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+		border: 6px solid #00ff40;
+		border-bottom: 6px solid transparent;
+	}
+	25% {
+		border: 6px solid #1900ff;
+		border-bottom: 6px solid transparent;
+	}
+	50% {
+		border: 6px solid #8c00ff;
+		border-bottom: 6px solid transparent;
+	}
+	75% {
+		border: 6px solid #cc00ff;
+		border-bottom: 6px solid transparent;
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+		border: 6px solid #00ffff;
+		border-bottom: 6px solid transparent;
+	}
+}
+
+
+@keyframes loader3 {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+		border: 6px solid #2dbcff;
+		border-bottom: 6px solid transparent;
+	}
+	25% {
+		border: 6px solid #3700ff;
+		border-bottom: 6px solid transparent;
+	}
+	50% {
+		border: 6px solid #ad009e;
+		border-bottom: 6px solid transparent;
+	}
+	75% {
+		border: 6px solid #ff00c8;
+		border-bottom: 6px solid transparent;
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+		border: 6px solid #ff0000;
+		border-bottom: 6px solid transparent;
+	}
+}

@@ -18,7 +18,7 @@ function PasswordField({
 	const [ isUpper, setIsUpper ] = useState(false);
 	const [ isNumber, setIsNumber ] = useState(false);
 	const [ isSpecialChar, setIsSpecialChar ] = useState(false);
-	const [ confirmField, setConfirmField ] = useState(false);
+	// const [ confirmField, setConfirmField ] = useState(false);
 	//* Toggle password field visibility
 	const [ showPassword, setShowPassword ] = useState(false);
 	//* Toggle confirPwd field visibility
@@ -95,13 +95,13 @@ function PasswordField({
 				error: true,
 				animation: true
 			});
-			setConfirmField(false);
+			// setConfirmField(false);
 		} else if (isEmpty(password)) {
 			setPasswordMessage({ text: 'Password is required!', error: true, animation: true });
-			setConfirmField(false);
+			// setConfirmField(false);
 		} else {
 			setPasswordMessage({ text: '', error: false, animation: false });
-			setConfirmField(true);
+			// setConfirmField(true);
 		}
 	};
 

@@ -13,7 +13,7 @@
 	nav {
 		transition: all 250ms linear;
 		.active {
-			color: #b8b8b8;
+			color: #ffd900;
 		}
 	}
 
@@ -49,13 +49,19 @@
                 display: inline-block;
 				width: 100%;
 				padding-left: 1.5rem;
+				transition: all 250ms linear;
+
                 a {
                     display: inline-block;
                     padding: 1.5rem 1rem;
                     width: 100%;
 					color: snow;
 					text-decoration: none;
-                }
+				}
+				
+				&:hover {
+					transform: scale(1.1) translateX(10px);
+				}
             }
 		}
 	}
@@ -79,13 +85,19 @@
                 display: inline-block;
 				width: 100%;
 				padding-left: 0rem;
+				transition: all 250ms linear;
+
                 a {
                     display: inline-block;
                     padding: 1.5rem 1rem;
                     width: 100%;
 					color: snow;
 					text-decoration: none;
-                }
+				}
+				
+				&:hover {
+					transform: scale(1.5);
+				}
             }
 		}
 	}

@@ -15,7 +15,7 @@ const SideBar = () => {
 	));
 
 	const icons_menu_items = menuData.map((item, i) => (
-		<li key={i} onClick={() => setIsMenuActive(!isMenuActive)}>
+		<li key={i} onClick={() => setIsMenuActive(false)} title={item.text}>
 			<NavLink exact activeClassName="active" to={item.path}>
 				<i className={item.iconClass} />
 			</NavLink>
@@ -27,7 +27,7 @@ const SideBar = () => {
 	if (isMenuActive) {
 		nav_menu = (
 			<nav className="header_full_nav" onMouseLeave={() => setIsMenuActive(false)}>
-				<div className="arrow" title="Close Menu" onClick={() => setIsMenuActive(!isMenuActive)}>
+				<div className="arrow" onClick={() => setIsMenuActive(!isMenuActive)} title="Close Menu">
 					<i className="fas fa-angle-double-left" />
 				</div>
 				<ul className={`animated ${isMenuActive ? 'fadeInLeft' : ''}`}>{full_menu_items}</ul>
@@ -36,14 +36,14 @@ const SideBar = () => {
 	} else {
 		nav_menu = (
 			<nav className="header_icons_nav" onMouseLeave={() => setIsMenuActive(false)}>
-				<div className="arrow" title="Open Menu" onClick={() => setIsMenuActive(!isMenuActive)}>
-					<i className="fas fa-angle-double-right" />
+				<div className="arrow" onClick={() => setIsMenuActive(!isMenuActive)} title="Open Menu">
+					<i className="fas fa-angle-double-right"/>
 				</div>
-				<ul onMouseEnter={() => setIsMenuActive(true)}>{icons_menu_items}</ul>
+				<ul>{icons_menu_items}</ul>
 			</nav>
 		);
 	}
-
+	
 	return <header className="header">{nav_menu}</header>;
 };
 

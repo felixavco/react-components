@@ -49,11 +49,16 @@ function Register() {
 	);
 
 	//* Clears the created user name to remove the alert after 2s
-	useEffect(() => {
-		setTimeout(() => {
-			setCreatedUserName('')
-		}, 2000);
-	}, [createdUserName]);
+	useEffect(
+		() => {
+			if (createdUserName !== '') {
+				setTimeout(() => {
+					setCreatedUserName('');
+				}, 2000);
+			}
+		},
+		[ createdUserName ]
+	);
 
 	const clearForm = () => {
 		setName('');
